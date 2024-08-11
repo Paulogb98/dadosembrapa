@@ -1,0 +1,188 @@
+# Ctrl + Space para obter Dicas
+openapi: 3.0.1
+
+info:
+  title: API de Extração de Dados de Viticultura - EMBRAPA
+  description: >
+    Esta API fornece dados sobre comercialização, exportação, importação, processamento e produção de produtos vitícolas no Brasil entre os anos de 1970 a 2023.
+  version: 1.0.0  # Versão da API
+  contact:
+    name: Desenvolvedor
+    email: paulogb98@outlook.com
+    url: https://www.linkedin.com/in/paulo-goiss/
+  license:
+    name: "Licença: GPLv3"
+    url: https://www.gnu.org/licenses/quick-guide-gplv3.pt-br.html
+    
+externalDocs:
+  description: Documentação de Arquitetura da API
+  url: xxx
+
+servers:
+  - url: http://127.0.0.1:5000
+    description: Servidor local
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
+
+paths:
+  /:
+    get:
+      summary: Informações da API
+      description: Retorna informações gerais sobre a API e as rotas disponíveis.
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  description:
+                    type: string
+                  routes:
+                    type: object
+                  usage:
+                    type: string
+                  security:
+                    type: string
+                  contact:
+                    type: string
+        '500':
+          description: Internal Server Error
+
+  /login:
+    post:
+      summary: Obter token JWT
+      description: >
+        Autentica o usuário e retorna um token JWT. Esse token deve ser usado nas requisições subsequentes para acessar as rotas protegidas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Token JWT gerado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        '401':
+          description: Unauthorized Client Error
+
+  /comercializacao:
+    get:
+      summary: Dados de Comercialização
+      description: Retorna dados de comercialização de produtos vitícolas.
+      parameters:
+        - in: query
+          name: ano
+          schema:
+            type: integer
+            format: int32
+          description: Ano específico para os dados de comercialização.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dados de comercialização retornados com sucesso
+        '500':
+          description: Internal Server Error
+
+  /exportacao:
+    get:
+      summary: Dados de Exportação
+      description: Retorna dados de exportação de produtos vitícolas.
+      parameters:
+        - in: query
+          name: ano
+          schema:
+            type: integer
+            format: int32
+          description: Ano específico para os dados de exportação.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dados de exportação retornados com sucesso
+        '500':
+          description: Internal Server Error
+
+  /importacao:
+    get:
+      summary: Dados de Importação
+      description: Retorna dados de importação de produtos vitícolas.
+      parameters:
+        - in: query
+          name: ano
+          schema:
+            type: integer
+            format: int32
+          description: Ano específico para os dados de importação.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dados de importação retornados com sucesso
+        '500':
+          description: Internal Server Error
+
+  /processamento:
+    get:
+      summary: Dados de Processamento
+      description: Retorna dados de processamento de uvas.
+      parameters:
+        - in: query
+          name: ano
+          schema:
+            type: integer
+            format: int32
+          description: Ano específico para os dados de processamento.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dados de processamento retornados com sucesso
+        '500':
+          description: Internal Server Error
+
+  /producao:
+    get:
+      summary: Dados de Produção
+      description: Retorna dados de produção de uvas.
+      parameters:
+        - in: query
+          name: ano
+          schema:
+            type: integer
+            format: int32
+          description: Ano específico para os dados de produção.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dados de produção retornados com sucesso
+        '500':
+          description: Internal Server Error
